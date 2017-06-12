@@ -8,12 +8,12 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
-import com.yf.demo_push.pushservice.PushShareUtil;
+import com.yf.demo_push.pushservice.PushUtil;
 
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/6/1.
+ * Created by yufeng on 2017/6/1.
  *
  */
 
@@ -27,16 +27,19 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
     @Override
     public void onReceivePassThroughMessage(Context context, MiPushMessage miPushMessage) {
         Log.e(TAG,"onReceivePassThroughMessage--->miPushMessage.toString()="+miPushMessage.toString());
+        PushUtil.sendTransparentMsgBroadcast(context, miPushMessage.getContent(), XiaomiPush.XIAOMI_PUSH_NAME);
     }
 
     @Override
     public void onNotificationMessageClicked(Context context, MiPushMessage miPushMessage) {
         Log.e(TAG,"onNotificationMessageClicked--->miPushMessage.toString()="+miPushMessage.toString());
+        PushUtil.sendClickedBroadcast(context, miPushMessage.getContent(), XiaomiPush.XIAOMI_PUSH_NAME);
     }
 
     @Override
     public void onNotificationMessageArrived(Context context, MiPushMessage miPushMessage) {
         Log.e(TAG,"onNotificationMessageArrived--->miPushMessage.toString()="+miPushMessage.toString());
+        PushUtil.sendShowNotificationBroadcast(context,miPushMessage.getContent(), XiaomiPush.XIAOMI_PUSH_NAME);
     }
 
     @Override
@@ -52,9 +55,9 @@ public class XiaomiPushReceiver extends PushMessageReceiver{
         if (MiPushClient.COMMAND_REGISTER.equals(command)&& miPushCommandMessage.getResultCode()
                 == ErrorCode.SUCCESS && regId != null){
             Log.e(TAG,"onRecevieRegisterResult--->regId="+regId);
-            PushShareUtil.putString(context, XiaomiPush.XIAOMI_KEY, regId);
+            PushUtil.putString(context, XiaomiPush.XIAOMI_KEY, regId);
+            PushUtil.sendRegisterBroadcast(context, XiaomiPush.XIAOMI_PUSH_NAME);
         }
-        Log.e(TAG,"onRecevieRegisterResult--->miPushCommandMessage.toString()="+miPushCommandMessage.toString());
     }
 
     @Override

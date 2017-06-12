@@ -27,6 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/bd_pushservice-5.6.0.30.jar')
-    compile files('libs/HwPush_SDK_V2705.jar')
     compile files('libs/MiPush_SDK_Client_3_4_0.jar')
 }

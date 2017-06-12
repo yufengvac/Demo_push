@@ -25,13 +25,13 @@ public class PushFactory {
                 Log.e(TAG,"manufacturer="+manufacturer);
             }
 
-//            if (TextUtils.equals("xiaomi", manufacturer)){
-//                iPush = new XiaomiPush();
-//            }else if (TextUtils.equals("huawei", manufacturer)){
+            if (TextUtils.equals("xiaomi", manufacturer)){
+                iPush = new XiaomiPush();
+            }else if (TextUtils.equals("huawei", manufacturer)){
                 iPush = new HuaweiPush();
-//            }else {
-//                iPush = new BaiduPush();
-//            }
+            }else {
+                iPush = new BaiduPush();
+            }
             unregisterAllPushExcept(context,iPush);
         }
     }

@@ -46,7 +46,7 @@
         </activity>
 
 
-        <!-- push service start -->
+        <!-- 百度push开始 -->
         <!-- 用于接收系统消息以保证PushService正常运行 -->
         <receiver
             android:name="com.baidu.android.pushservice.PushServiceReceiver"
@@ -111,7 +111,6 @@
         </receiver>
         <!-- 百度push结束 -->
 
-
         <!-- 华为push开始 -->
         <receiver android:name=".pushservice.huawei.HuaweiPushReceiver">
             <intent-filter>
@@ -132,7 +131,6 @@
                 android:value="@string/hwpush_ability_value" />
         </receiver>
 
-
         <receiver
             android:name="com.huawei.android.pushagent.PushEventReceiver"
             android:process=":pushservice">
@@ -150,7 +148,6 @@
             </intent-filter>
         </receiver>
 
-
         <receiver
             android:name="com.huawei.android.pushagent.PushBootReceiver"
             android:process=":pushservice">
@@ -165,8 +162,9 @@
 
         <service
             android:name="com.huawei.android.pushagent.PushService"
-            android:process=":pushservice"/>
+            android:process=":pushservice" />
         <!-- 华为push结束 -->
+
 
         <!-- 小米push开始 -->
         <service

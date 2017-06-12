@@ -1,14 +1,16 @@
 package com.yf.demo_push.pushservice.baidu;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
+import com.yf.demo_push.pushservice.PushUtil;
 
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/5/31.
+ * Created by yufeng on 2017/5/31.
  *
  */
 
@@ -30,6 +32,17 @@ public class BaiduPushReceiver extends PushMessageReceiver{
     @Override
     public void onBind(Context context, int errorCode, String appId, String userId, String channelId, String requestId) {
         Log.e(TAG,"onBind--->errorCode="+errorCode+",appId="+appId+",userId="+userId+",channeld="+channelId+",requestId="+requestId);
+
+        if (errorCode == 0 && !TextUtils.isEmpty(appId) && !TextUtils.isEmpty(userId) && !TextUtils.isEmpty(channelId)){
+
+            String bindInfo = "&pushAppId=" + appId + "&pushUserId=" + userId + "&pushChannelId=" + channelId;
+            PushUtil.putString(context, BaiduPush.BAIDU_BIND_INFO_KEY, bindInfo);
+            PushUtil.putString(context, BaiduPush.BAIDUPUSH_APPID_KEY, appId);
+            PushUtil.putString(context, BaiduPush.BAIDUPUSH_USERID_KEY, userId);
+            PushUtil.putString(context, BaiduPush.BAIDUPUSH_CHANNELID_KEY, channelId);
+
+            PushUtil.sendRegisterBroadcast(context,BaiduPush.BAIDU_PUSH_NAME);
+        }
     }
 
     /**
@@ -69,10 +82,11 @@ public class BaiduPushReceiver extends PushMessageReceiver{
     @Override
     public void onMessage(Context context, String message, String customContentString) {
         Log.e(TAG,"onMessage--->message="+message+",customContentString="+customContentString);
+        PushUtil.sendTransparentMsgBroadcast(context, customContentString, BaiduPush.BAIDU_PUSH_NAME);
     }
 
     /***
-     * 消息被电击
+     * 消息被点击
      * @param context      上下文
      * @param title        消息标题
      * @param description  消息内容
@@ -81,6 +95,7 @@ public class BaiduPushReceiver extends PushMessageReceiver{
     @Override
     public void onNotificationClicked(Context context, String title, String description, String customString) {
         Log.e(TAG,"onNotificationClicked--->title="+title+",description="+description+",customString="+customString);
+        PushUtil.sendClickedBroadcast(context, customString, BaiduPush.BAIDU_PUSH_NAME);
     }
 
     /**
@@ -93,5 +108,6 @@ public class BaiduPushReceiver extends PushMessageReceiver{
     @Override
     public void onNotificationArrived(Context context, String title, String content, String extra) {
         Log.e(TAG,"onNotificationArrived--->title="+title+",content="+content+",extra="+extra);
+        PushUtil.sendShowNotificationBroadcast(context,content, BaiduPush.BAIDU_PUSH_NAME);
     }
 }
